@@ -29,7 +29,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements LocationListener {
     private LocationManager lm;
     private Criteria criteria;
-    public int TEMPO_REQUISICAO_LATLONG = 60000;
+    public int TEMPO_REQUISICAO_LATLONG = 5000;
     public int DISTANCIA_MIN_METROS = 0;
 
     private TextView txtLat;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         );
         edtLocal = (AutoCompleteTextView)findViewById(R.id.edtLocal);
         edtLocal.setAdapter(adapterCheckIn);
-
+        adapterCheckIn.notifyDataSetChanged();
         ArrayAdapter<Categoria> adapterCat = new ArrayAdapter<Categoria>(this,
                 android.R.layout.simple_dropdown_item_1line,
                 Categoria.getCategorias());
@@ -62,6 +62,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         configuraCriterioLocation();
         iniciaGeolocation(this);
     }
@@ -120,18 +125,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void clickCheckIn(View v){
         String Local = edtLocal.getText().toString();
         Categoria cat = (Categoria) spnCat.getSelectedItem();
+
         if(latitude == "" || longitude == ""){
             Toast.makeText(this,"Aguarde a localização ser determinada",Toast.LENGTH_LONG).show();
             return;
         }
-
 
         if(Local == null || Local=="" || cat == null){
             Toast.makeText(this,"Alguns dados do check-in não foram preenchidos!",Toast.LENGTH_LONG).show();
             return;
         }
 
-        CheckIn.insertCheckIn(Local,cat.getIdCategoria(),latitude,longitude);
+        CheckIn.insertCheckIn(Local,cat,latitude,longitude);
+        Toast.makeText(this,"Check-in realizado com sucesso!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -149,6 +155,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 startActivity(it);
                 finish(); // FINISH HIM!!
                 break;
+
+            case R.id.action_gestao:
+                break;
+
+            case R.id.action_lugares:
+                break;
+
+            default: break;
         }
+
+        return true;
     }
 }
