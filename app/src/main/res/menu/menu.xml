@@ -16,7 +16,7 @@
     <item
         android:id="@+id/action_lugares"
         android:orderInCategory="3"
-        android:title="Lugares já visitados"
+        android:title="Lugares mais visitados"
         app:showAsAction="never"
         />
 </menu>
