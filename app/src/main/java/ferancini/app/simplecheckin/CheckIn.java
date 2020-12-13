@@ -2,6 +2,7 @@ package ferancini.app.simplecheckin;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,12 +12,12 @@ import java.util.prefs.BackingStoreException;
 public class CheckIn implements Serializable {
     private String local;
     private int qtdVisitas;
-    private int cat;
+    private Categoria cat;
     private String latitude;
     private String longitude;
     private static List<CheckIn> listCheckIn;
 
-    public CheckIn(String local, int qtdVisitas, int cat, String latitude, String longitude) {
+    public CheckIn(String local, int qtdVisitas, Categoria cat, String latitude, String longitude) {
         this.local = local;
         this.qtdVisitas = qtdVisitas;
         this.cat = cat;
@@ -29,7 +30,7 @@ public class CheckIn implements Serializable {
                 "CheckIn",
                 new String[]{"Local","qtdVisitas","cat","latitude","longitude"},
                 "",
-                ""
+                "Local DESC"
                 );
         listCheckIn = new ArrayList<CheckIn>();
         while(c.moveToNext()){
@@ -41,7 +42,10 @@ public class CheckIn implements Serializable {
 
             String local = c.getString(colLocal);
             int qtdVisitas = c.getInt(colVisitas);
-            int cat = c.getInt(colCat);
+            int idCat = c.getInt(colCat);
+
+            Categoria cat = Categoria.getCategoria(idCat);
+
             String latutide = c.getString(colLat);
             String longitude = c.getString(colLon);
 
@@ -52,7 +56,7 @@ public class CheckIn implements Serializable {
         return listCheckIn;
     }
 
-    public static void insertCheckIn(String local, int cat, String latitude, String longitude){
+    public static void insertCheckIn(String local, Categoria cat, String latitude, String longitude){
         Cursor cr = BancoDadosSingleton.getInstance().buscar("Checkin", new String[]{"Local","qtdVisitas"},"Local='"+local+"'","");
         if(cr.getCount() > 0){
             int visitas = 0;
@@ -70,18 +74,19 @@ public class CheckIn implements Serializable {
             ContentValues ct = new ContentValues();
             ct.put("local", local);
             ct.put("qtdVisitas", 1);
-            ct.put("cat", cat);
+            Log.i("CHECKIN","categoria inserida id="+cat.getIdCategoria());
+            ct.put("cat", cat.getIdCategoria());
             ct.put("latitude", latitude);
             ct.put("longitude", longitude);
             BancoDadosSingleton.getInstance().inserir("Checkin",ct);
         }
     }
 
-    public int getCat() {
+    public Categoria getCat() {
         return cat;
     }
 
-    public void setCat(int cat) {
+    public void setCat(Categoria cat) {
         this.cat = cat;
     }
 
