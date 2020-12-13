@@ -20,8 +20,8 @@ public final class BancoDadosSingleton {
                     "longitude TEXT NOT NULL, CONSTRAINT fkey0 FOREIGN KEY (cat) " +
                     "REFERENCES Categoria (idCategoria));",
 
-            "CREATE TABLE Categoria (idCategoria INTEGER PRIMARY KEY " +
-                    "AUTOINCREMENT, nome TEXT NOT NULL);",
+            "CREATE TABLE Categoria (idCategoria INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                    "nome TEXT NOT NULL);",
 
             "INSERT INTO Categoria (nome) VALUES ('Restaurante');",
             "INSERT INTO Categoria (nome) VALUES ('Bar');",
