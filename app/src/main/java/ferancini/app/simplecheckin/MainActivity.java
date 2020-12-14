@@ -152,11 +152,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         switch (item.getItemId()){
             case R.id.action_map:
                 Intent it = new Intent(this, MapCheckInActivity.class);
+                it.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(it);
                 finish(); // FINISH HIM!!
                 break;
 
             case R.id.action_gestao:
+                Intent itG = new Intent(this, GestaoActivity.class);
+                startActivity(itG);
                 break;
 
             case R.id.action_lugares:
