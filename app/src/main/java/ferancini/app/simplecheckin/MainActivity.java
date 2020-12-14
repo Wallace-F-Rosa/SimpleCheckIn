@@ -160,9 +160,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             case R.id.action_gestao:
                 Intent itG = new Intent(this, GestaoActivity.class);
                 startActivity(itG);
+                finish();
                 break;
 
             case R.id.action_lugares:
+                Intent itL = new Intent(this, VisitasActivity.class);
+                startActivity(itL);
+                finish();
                 break;
 
             default: break;
