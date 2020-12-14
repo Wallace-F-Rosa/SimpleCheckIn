@@ -1,8 +1,14 @@
 package ferancini.app.simplecheckin;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,8 +20,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
-public class MapCheckInActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapCheckInActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
@@ -27,6 +34,33 @@ public class MapCheckInActivity extends FragmentActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    //Assumimos que sempre há atualização nos check-ins
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mMap != null){
+            mMap.clear();
+            List<CheckIn> listCheckIn = CheckIn.getCheckIns();
+            for (CheckIn checkin : listCheckIn){
+                LatLng latlon = new LatLng(Double.parseDouble(checkin.getLatitude()), Double.parseDouble(checkin.getLongitude()));
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(latlon)
+                        .title(checkin.getLocal())
+                        .snippet("Categoria : "+checkin.getCat().getNome()+" Visitas:"+checkin.getQtdVisitas())
+                );
+            }
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inf = getMenuInflater();
+        inf.inflate(R.menu.menu_map, menu);
+        return true;
     }
 
     @Override
@@ -55,5 +89,22 @@ public class MapCheckInActivity extends FragmentActivity implements OnMapReadyCa
 
             mMap.animateCamera(c);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_voltar:
+                Intent it = new Intent(this, MainActivity.class);
+                startActivity(it);
+                break;
+
+            case R.id.action_gestao:
+                Intent itG = new Intent(this, GestaoActivity.class);
+                startActivity(itG);
+                break;
+
+        }
+        return true;
     }
 }
