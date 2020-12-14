@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleCheckIn">
-        <activity android:name=".GestaoActivity"></activity>
+        <activity android:name=".VisitasActivity"></activity>
+        <activity android:name=".GestaoActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
