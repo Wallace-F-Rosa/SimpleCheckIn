@@ -25,13 +25,21 @@ public class CheckIn implements Serializable {
         this.longitude = longitude;
     }
 
+    public static List<CheckIn> getOrderedCheckIns(){
+        return getCheckIns("Local DESC");
+    }
+
     public static List<CheckIn> getCheckIns(){
+        return getCheckIns("");
+    }
+
+    public static List<CheckIn> getCheckIns(String orderBy){
         Cursor c = BancoDadosSingleton.getInstance().buscar(
                 "CheckIn",
                 new String[]{"Local","qtdVisitas","cat","latitude","longitude"},
                 "",
-                ""
-                );
+                orderBy
+            );
         listCheckIn = new ArrayList<CheckIn>();
         while(c.moveToNext()){
             int colLocal = c.getColumnIndex("Local");
