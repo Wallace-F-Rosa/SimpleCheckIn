@@ -30,7 +30,7 @@ public class CheckIn implements Serializable {
                 "CheckIn",
                 new String[]{"Local","qtdVisitas","cat","latitude","longitude"},
                 "",
-                "Local DESC"
+                ""
                 );
         listCheckIn = new ArrayList<CheckIn>();
         while(c.moveToNext()){
@@ -80,6 +80,10 @@ public class CheckIn implements Serializable {
             ct.put("longitude", longitude);
             BancoDadosSingleton.getInstance().inserir("Checkin",ct);
         }
+    }
+
+    public static void delete(String Local) {
+        BancoDadosSingleton.getInstance().deletar("Checkin", "Local='"+Local+"'");
     }
 
     public Categoria getCat() {
